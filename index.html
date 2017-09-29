@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <!-- stylesheets for game, modal and flexbox framework -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/framework.css">
+    <!-- jquery library -->
+    <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <!-- my javascript library of functions for this game -->
+    <script src="js/myLibraryFunctions.js"></script>
+    <title>Memory Game</title>
+  </head>
+  <body class="container">
+    <header class="row">
+      <h1 class="col-75 header">The Memory Game</h1>
+      <p class="col-75 welcome"></p>
+    </header>
+    <section class="dashboard row">
+      <div class="scoreboard col-4">
+        <p class="label col-1">Score</p>
+        <p class="score col-1">0</p>
+      </div>
+      <div class="rating col-4">
+        <p class="label col-75">Stars</p>
+        <p>
+          <!-- <span>★☆</span> -->
+          <span class="stars">☆</span>
+          <span class="stars">☆</span>
+          <span class="stars">☆</span>
+          <span class="stars">☆</span>
+          <span class="stars">☆</span>
+        </p>
+      </div>
+      <div class="badges col-4">
+        <p class="label col-1">Achievements</p>
+        <div class="badge col-4"></div>
+        <div class="badge col-4"></div>
+        <div class="badge col-4"></div>
+      </div>
+    </section>
+    <!-- dynamic grid is built here -->
+    <div class="row">
+      <main class="col-1">
+      </main>
+    </div>
+    <!-- The results modal window -->
+    <div class="modal">
+      <div class="modal-content">
+        <!-- <span class="close">Close</span> -->
+        <p>Congratulations!! You have found all the matching tiles.</p>
+        <p class="current"></p>
+        <p class="best"></p>
+        <p class="ratings"></p>
+        <p class="achieve"></p>
+        <span><button class="reset" type="button" name="Reset">Play Again!!</button></span>
+      </div>
+      </div>
+    </div>
+    <script src="js/script.js"></script>
+  </body>
+</html>
