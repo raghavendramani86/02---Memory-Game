@@ -2,16 +2,25 @@
 
 // Function category 1: Events and (re)initializations
   function clickListener() {
-    if (triggerWatch($(this),grid)) {
-      rotateCell($(this),false,"");
-    };
+    timer(true,grid);
+    rotateCell($(this),false);
     applyImage($(this),getTag($(this)),false);
+    if (!triggerWatch($(this),grid)) {
+      setTimeout(rollBackCell, 200);
+    };
     updateCounter($('.score'), grid);
     updateRating($('.stars'), grid);
     // is it the end?
-    if (endWatcher($(this),grid, true)) {
+    if (endWatcher($(this),grid,true)) {
       displayEnd();
     }
+  }
+
+  function rollBackCell() {
+    rotateCell(grid.counter[grid.counter.length-1],false);
+    applyImage(grid.counter[grid.counter.length-1],"");
+    rotateCell(grid.counter[grid.counter.length-2],false);
+    applyImage(grid.counter[grid.counter.length-2],"");
   }
 
   function initialize(reset) {
@@ -24,6 +33,10 @@
     grid = makeGrid($('main'),4);
     grid = applyProperties(grid,true);
     rotateCell(grid,true);
+    // start timer
+    grid.clock = setInterval(function() {
+      $('.timer')[0].textContent = timer(true ,grid, false);
+    },1000);
     //retrieve existing achievements
     setAchievement(0);
   }
@@ -89,7 +102,11 @@
     obj.toggle = false;
     obj.end = [];
     obj.achievements = [];
-    //select unique images from source
+    obj.timer = false;
+    obj.clock;
+    obj.start;
+
+    // select unique images from source
     for (var i = 0; i < obj.source.length; i++) {
       if (obj.image.includes(obj.source[i])===false) {
         obj.image.push(obj.source[i]);
@@ -106,6 +123,26 @@
   }
 
 // Function category 3: perform actions
+  function timer(start, array, stop) {
+    if (start) {
+      if (!array.timer) {
+        array.timer = true;
+        array.start = new Date().getTime();
+        return Math.ceil((new Date().getTime() - array.start)/1000)
+      }
+      else {
+        // returns time since start
+        return Math.ceil((new Date().getTime() - array.start)/1000);
+      }
+    }
+    if (stop) {
+      array.timer = false;
+      // stop timer
+      clearInterval(array.clock);
+      return Math.floor((new Date().getTime() - array.start)/1000);
+    }
+  }
+
   function rotateCell(obj, isGrid, dummyImage) {
     if (isGrid) {
       for (var i = 0; i < obj.cell.length; i++) {
@@ -120,18 +157,13 @@
     }
     else {
       obj.toggleClass('rotate');
-      if (dummyImage) {
-        applyImage (obj,dummyImage)
-      }
-      else {
-        applyImage (obj,"");
-      }
     }
   }
 
   function applyImage(obj, image, isGrid, isBadge) {
     if (isGrid) {
-      var randomArray = shuffleArray(buildRandomSequence(0,obj.cell.length/2,2,obj.image.length));
+      var randomArray = buildRandomSequence(0,obj.cell.length/2,2,obj.image.length);
+      //var randomArray = shuffleArray(buildRandomSequence(0,obj.cell.length/2,2,obj.image.length));
       for (var i = 0; i < obj.cell.length; i++) {
         obj.tag[i] = obj.image[randomArray[i]];
         obj.cell[i].css('background-image',"url("+obj.tag[i]+")")
@@ -192,7 +224,7 @@
   }
 
   function shuffleArray(array) {
-    var shuffle = buildRandomSequence(0,array.length,1,array.length);
+    var shuffle = shuffleArray(buildRandomSequence(0,array.length,1,array.length));
     var newArray = [];
     for (var i = 0; i < array.length; i++) {
       newArray.push(array[shuffle[i]]);
@@ -286,13 +318,10 @@
   function triggerWatch(obj, array) {
     //increment click counter
     array.counter.push(obj);
-    // check click toggle
     if (array.toggle) {
       array.toggle = false;
       if (!match(obj, array)) {
-        // rotate cells
-        // roll back the previous click
-        rotateCell(array.counter[array.counter.length-2],false);
+        // unfreeze cell
         array.counter[array.counter.length-2].unbind('click');
         return false;
       }
@@ -403,7 +432,8 @@
       $('.achieve')[0].textContent+= 'Achievement unlocked!! Solved 5 times'
       setAchievement(3);
     }
-      $('.modal')[0].style.display = "block";
+    $('.time')[0].textContent = 'Duration of play is: ' + timer(false,grid,true) + ' seconds';
+    $('.modal')[0].style.display = "block";
   }
 
 // Function category 8: cleanup and reset
@@ -422,8 +452,10 @@
     $('.current')[0].textContent = '';
     $('.best')[0].textContent = '';
     $('.ratings')[0].textContent = '';
+    $('.time')[0].textContent = '';
     $('.achieve')[0].textContent = '';
-    $('.score')[0].textContent = '';
+    $('.score')[0].textContent = '0';
+    $('.timer')[0].textContent = '0';
     for (var i = 0; i < $('.stars').length; i++) {
       $('.stars')[i].textContent = '☆';
     }

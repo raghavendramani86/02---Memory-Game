@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/framework.css">
     <!-- jquery library -->
     <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- my javascript library of functions for this game -->
     <script src="js/myLibraryFunctions.js"></script>
     <title>Memory Game</title>
@@ -22,6 +23,10 @@
       <div class="scoreboard col-4">
         <p class="label col-1">Score</p>
         <p class="score col-1">0</p>
+      </div>
+      <div class="timing col-4">
+        <p class="label col-1">Timer</p>
+        <p class="timer col-1">0</p>
       </div>
       <div class="rating col-4">
         <p class="label col-75">Stars</p>
@@ -44,6 +49,7 @@
     <!-- dynamic grid is built here -->
     <div class="row">
       <main class="col-1">
+        <button class="reset col-9" type="button" name="button">RESET</button>
       </main>
     </div>
     <!-- The results modal window -->
@@ -54,9 +60,9 @@
         <p class="current"></p>
         <p class="best"></p>
         <p class="ratings"></p>
+        <p class="time"></p>
         <p class="achieve"></p>
         <span><button class="reset" type="button" name="Reset">Play Again!!</button></span>
-      </div>
       </div>
     </div>
     <script src="js/script.js"></script>
