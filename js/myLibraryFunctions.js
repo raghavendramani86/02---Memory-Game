@@ -162,8 +162,7 @@
 
   function applyImage(obj, image, isGrid, isBadge) {
     if (isGrid) {
-      var randomArray = buildRandomSequence(0,obj.cell.length/2,2,obj.image.length);
-      //var randomArray = shuffleArray(buildRandomSequence(0,obj.cell.length/2,2,obj.image.length));
+      var randomArray = shuffleArray(buildRandomSequence(0,obj.cell.length/2,2,obj.image.length));
       for (var i = 0; i < obj.cell.length; i++) {
         obj.tag[i] = obj.image[randomArray[i]];
         obj.cell[i].css('background-image',"url("+obj.tag[i]+")")
