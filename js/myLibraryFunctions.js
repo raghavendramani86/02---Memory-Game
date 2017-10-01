@@ -223,7 +223,7 @@
   }
 
   function shuffleArray(array) {
-    var shuffle = shuffleArray(buildRandomSequence(0,array.length,1,array.length));
+    var shuffle = buildRandomSequence(0,array.length,1,array.length);
     var newArray = [];
     for (var i = 0; i < array.length; i++) {
       newArray.push(array[shuffle[i]]);
